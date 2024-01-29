@@ -1,20 +1,35 @@
-import { NgModule } from "@angular/core";
-import {BrowserModule, provideClientHydration} from "@angular/platform-browser";
-import {HeaderModule} from "./header.module";
+import {BrowserModule} from "@angular/platform-browser";
+import {NgModule} from "@angular/core";
+
+import {AppComponent} from "./app.component";
+import {HeaderComponent} from "./Header/header.component";
+import {FooterComponent} from "./footer/footer.component";
+import {DirectivaComponent} from "./directiva/directiva.component";
+import {ClientesComponent} from "./clientes/clientes.component";
+import {ClienteService} from "./clientes/cliente.service";
+
+import {RouterModule, Routes} from "@angular/router";
+
+const routes: Routes=[
+  {path: '', redirectTo: '/clientes', pathMatch: 'full'},
+  {path: 'directivas' , component: DirectivaComponent },
+  {path: 'clientes', component: ClientesComponent}
+];
 
 
 @NgModule({
-  declarations:[
-
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    FooterComponent,
+    DirectivaComponent,
+    ClientesComponent
   ],
-  imports:[
-    BrowserModule,HeaderModule
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(routes)
   ],
-  providers:[
-    provideClientHydration()
-  ],
-  bootstrap: []
-
+  providers: [ClienteService],
+  bootstrap: [AppComponent]
 })
-
-export class AppModule {}
+export class AppModule { }
