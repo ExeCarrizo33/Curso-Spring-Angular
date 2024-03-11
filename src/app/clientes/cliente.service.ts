@@ -4,7 +4,7 @@ import {formatDate, DatePipe} from "@angular/common";
 import {Cliente} from "./cliente"; // Importa el modelo Cliente
 import {Observable, of, throwError} from "rxjs"; // Importa Observable y of de RxJS
 import {HttpClient, HttpHeaders} from "@angular/common/http"; // Importa HttpClient de Angular para realizar solicitudes HTTP
-import {map, catchError} from "rxjs/operators";
+import {map, catchError, tap} from "rxjs/operators";
 import swal from "sweetalert2"; // Importa el operador map de RxJS para transformar datos
 
 import {Router} from '@angular/router';
@@ -20,22 +20,34 @@ export class ClienteService {
   } // Constructor que inyecta HttpClient para realizar solicitudes HTTP
 
   // Método para obtener la lista de clientes desde el backend
-  getClientes(): Observable<Cliente[]> {
-    return this.http.get<Cliente[]>(this.urlEndPoint).pipe( // Realiza una solicitud GET al servidor usando HttpClient
-      map((response) => {
+  getClientes(page : number): Observable<any> {
+    return this.http.get<Cliente[]>(this.urlEndPoint + '/page/' + page).pipe( // Realiza una solicitud GET al servidor usando HttpClient
+      tap((response: any) => {
 
-          let clientes = response as Cliente[]
+        console.log('ClienteService: tap 1');
+        (response.content as Cliente[]).forEach(cliente => {
+          console.log(cliente.nombre)
+        })
+      }),
+      map((response:any) => {
 
-          return clientes.map(cliente => {
+          (response.content as Cliente[]).map(cliente => {
             cliente.nombre = cliente.nombre.toUpperCase();
 
-            let datePipe = new DatePipe('es');
+            // let datePipe = new DatePipe('es');
             //cliente.createAt = datePipe.transform(cliente.createAt,'EEEE dd, MMMM yyyy'); //formatDate(cliente.createAt,'dd-MM-yyyy','en-US')
 
             return cliente;
           });
+          return response;
         }
-      )
+      ),
+      tap(response => {
+        console.log('ClienteService: tap 2');
+          (response.content as Cliente[]).forEach(cliente => {
+          console.log(cliente.nombre)
+        })
+      }),
     );
   }
 
