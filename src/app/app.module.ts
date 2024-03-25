@@ -7,6 +7,7 @@ import { DirectivaComponent } from "./directiva/directiva.component";
 import { ClientesComponent } from "./clientes/clientes.component";
 import { PaginatorComponent } from "./paginator/paginator.component";
 import { FormComponent } from "./clientes/form.component";
+import { DetalleComponent } from "./clientes/detalle/detalle.component";
 import { ClienteService } from "./clientes/cliente.service";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
@@ -31,7 +32,7 @@ const routes: Routes = [
   { path: "clientes", component: ClientesComponent },
   { path: "clientes/form", component: FormComponent },
   { path: "clientes/form/:id", component: FormComponent },
-  { path: "clientes/page/:page", component: ClientesComponent }
+  { path: "clientes/page/:page", component: ClientesComponent },
 ];
 
 @NgModule({
@@ -42,7 +43,8 @@ const routes: Routes = [
     DirectivaComponent,
     ClientesComponent,
     FormComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    DetalleComponent
   ],
   imports: [
     BrowserModule,

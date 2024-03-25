@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
-import {CLIENTES} from "./clientes.json"; // Importa el listado de clientes desde un archivo JSON (no utilizado actualmente)
 import {formatDate, DatePipe} from "@angular/common";
 import {Cliente} from "./cliente"; // Importa el modelo Cliente
 import {Observable, of, throwError} from "rxjs"; // Importa Observable y of de RxJS
-import {HttpClient, HttpHeaders} from "@angular/common/http"; // Importa HttpClient de Angular para realizar solicitudes HTTP
+import {HttpClient, HttpEvent, HttpHeaders, HttpRequest} from "@angular/common/http"; // Importa HttpClient de Angular para realizar solicitudes HTTP
 import {map, catchError, tap} from "rxjs/operators";
 import swal from "sweetalert2"; // Importa el operador map de RxJS para transformar datos
 
@@ -20,7 +19,7 @@ export class ClienteService {
   } // Constructor que inyecta HttpClient para realizar solicitudes HTTP
 
   // Método para obtener la lista de clientes desde el backend
-  getClientes(page : number): Observable<any> {
+  getClientes(page: number): Observable<any> {
     return this.http.get<Cliente[]>(this.urlEndPoint + '/page/' + page).pipe( // Realiza una solicitud GET al servidor usando HttpClient
       tap((response: any) => {
 
@@ -29,7 +28,7 @@ export class ClienteService {
           console.log(cliente.nombre)
         })
       }),
-      map((response:any) => {
+      map((response: any) => {
 
           (response.content as Cliente[]).map(cliente => {
             cliente.nombre = cliente.nombre.toUpperCase();
@@ -44,7 +43,7 @@ export class ClienteService {
       ),
       tap(response => {
         console.log('ClienteService: tap 2');
-          (response.content as Cliente[]).forEach(cliente => {
+        (response.content as Cliente[]).forEach(cliente => {
           console.log(cliente.nombre)
         })
       }),
@@ -102,6 +101,16 @@ export class ClienteService {
         return throwError(() => e);
       })
     )
+  }
+
+  subirFoto(archivo: File, id) :Observable<HttpEvent<any>> {
+    let formData = new FormData();
+    formData.append("archivo", archivo);
+    formData.append("id", id);
+    const req = new HttpRequest('POST', `${this.urlEndPoint}/upload`, formData, {
+      reportProgress: true
+    });
+    return this.http.request(req);
   }
 
 }
