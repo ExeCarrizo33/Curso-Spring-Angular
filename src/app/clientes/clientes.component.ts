@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Cliente} from "./cliente";
 import {ClienteService} from "./cliente.service";
-import {ModalService} from "./detalle/modal.service";
+import {ModalService} from "./detail/modal.service";
 import {tap} from "rxjs/operators";
 import Swal from "sweetalert2";
 import {ActivatedRoute} from "@angular/router";
@@ -44,6 +44,15 @@ export class ClientesComponent implements OnInit {
         });
       }
     );
+
+    this.modalService.notifyUpload.subscribe(cliente => {
+      this.clientes.map(clienteOriginal => {
+        if(cliente.id == clienteOriginal.id){
+          clienteOriginal.foto = cliente.foto;
+        }
+        return clienteOriginal;
+      })
+    })
   }
 
   delete(cliente: Cliente):
