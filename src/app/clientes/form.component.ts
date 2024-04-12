@@ -4,6 +4,7 @@ import {ClienteService} from "./cliente.service"; // Importa el servicio Cliente
 import {Router, ActivatedRoute} from "@angular/router"; // Importa el enrutador de Angular
 import swal from 'sweetalert2'
 import {Observable} from "rxjs";
+import {Region} from './region';
 
 
 @Component({
@@ -13,6 +14,7 @@ import {Observable} from "rxjs";
 export class FormComponent implements OnInit { // Definición de la clase del componente, implementando OnInit
 
   public cliente: Cliente = new Cliente(); // Instancia de la clase Cliente, inicializada como un nuevo cliente
+  regions: Region[];
   public titulo: string = "Crear Cliente"; // Variable que define el título del formulario
 
   public errores: string[];
@@ -34,6 +36,8 @@ export class FormComponent implements OnInit { // Definición de la clase del co
         this.clienteService.getCliente(id).subscribe((cliente) => this.cliente = cliente)
       }
     })
+    this.clienteService.getRegions().subscribe(regions => this.regions = regions
+    )
   }
 
   create(): void {
@@ -42,7 +46,7 @@ export class FormComponent implements OnInit { // Definición de la clase del co
       cliente => {
         this.router.navigate(['/clientes'])
         // @ts-ignore
-        swal.fire('Nuevo Cliente', `Cliente ${cliente.nombre} creado con éxito!`, 'success')
+        swal.fire('Nuevo Cliente', `Cliente ${this.cliente.nombre} creado con éxito!`, 'success')
       },
       err => {
         this.errores = err.error.errors as string[];
@@ -53,10 +57,11 @@ export class FormComponent implements OnInit { // Definición de la clase del co
   }
 
   update(): void {
+    console.log(this.cliente)
     this.clienteService.update(this.cliente).subscribe(
       cliente => {
         this.router.navigate(['/clientes'])
-        swal.fire('Cliente Actualizado', `Cliente ${cliente.nombre} actualizado con éxito!`, 'success')
+        swal.fire('Cliente Actualizado', `Cliente ${this.cliente.nombre} actualizado con éxito!`, 'success')
       },
       err => {
         this.errores = err.error.errors as string[];
@@ -66,5 +71,11 @@ export class FormComponent implements OnInit { // Definición de la clase del co
     );
   }
 
+  compareRegion(o1: Region, o2: Region) {
+    if (o1 === undefined && o2 === undefined){
+      return true;
+    }
+    return o1 === null || o2 === null || o1 === undefined || o2 === undefined ? false : o1.id === o2.id
+  }
 
 }

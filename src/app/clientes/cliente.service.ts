@@ -7,6 +7,7 @@ import {map, catchError, tap} from "rxjs/operators";
 import swal from "sweetalert2"; // Importa el operador map de RxJS para transformar datos
 
 import {Router} from '@angular/router';
+import {Region} from "./region";
 
 @Injectable({
   providedIn: 'root' // Define que este servicio se proveerá en el ámbito de toda la aplicación
@@ -17,6 +18,10 @@ export class ClienteService {
 
   constructor(private http: HttpClient, private router: Router) {
   } // Constructor que inyecta HttpClient para realizar solicitudes HTTP
+
+  getRegions(): Observable<Region[]>{
+    return this.http.get<Region[]>(this.urlEndPoint + '/regions');
+  }
 
   // Método para obtener la lista de clientes desde el backend
   getClientes(page: number): Observable<any> {
