@@ -5,6 +5,9 @@ import {Router, ActivatedRoute} from "@angular/router"; // Importa el enrutador 
 import swal from 'sweetalert2'
 import {Observable} from "rxjs";
 import {Region} from './region';
+import {ModalService} from "./detail/modal.service";
+import Swal from "sweetalert2";
+import {AuthService} from "../users/auth.service";
 
 
 @Component({
@@ -21,11 +24,14 @@ export class FormComponent implements OnInit { // Definición de la clase del co
 
   constructor(private clienteService: ClienteService, // Constructor del componente, inyecta el servicio ClienteService y el enrutador
               private router: Router,
+              private modalService: ModalService,
+              private authService: AuthService,
               private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.cargarCliente()
+
     // Método del ciclo de vida del componente, se ejecuta al inicializar el componente
   }
 

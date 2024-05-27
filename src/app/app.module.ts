@@ -8,6 +8,7 @@ import { ClientesComponent } from "./clientes/clientes.component";
 import { PaginatorComponent } from "./paginator/paginator.component";
 import { FormComponent } from "./clientes/form.component";
 import { DetalleComponent } from "./clientes/detail/detalle.component";
+import { LoginComponent} from "./users/login.component";
 import { ClienteService } from "./clientes/cliente.service";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
@@ -25,14 +26,20 @@ import localeEs from "@angular/common/locales/es";
 registerLocaleData(localeEs, "es");
 
 import { RouterModule, Routes } from "@angular/router";
+import {authGuard} from "./guards/auth.guard";
+import {Forbidden403Component} from "./components/forbidden403/forbidden403.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "/clientes", pathMatch: "full" },
   { path: "directivas", component: DirectivaComponent },
   { path: "clientes", component: ClientesComponent },
-  { path: "clientes/form", component: FormComponent },
-  { path: "clientes/form/:id", component: FormComponent },
+  { path: "clientes/form", component: FormComponent, canActivate:[authGuard]  },
+  { path: "clientes/form/:id", component: FormComponent, canActivate:[authGuard] },
   { path: "clientes/page/:page", component: ClientesComponent },
+  { path: "login", component: LoginComponent },
+  { path: "forbidden", component: Forbidden403Component }
+
+
 ];
 
 @NgModule({
@@ -53,14 +60,16 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     BrowserAnimationsModule,
     MatDatepickerModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+
   ],
   providers: [
     ClienteService,
-    { provide: LOCALE_ID, useValue: "es" },
-    { provide: MAT_DATE_LOCALE, useValue: "es-ES" },
+    {provide: LOCALE_ID, useValue: "es"},
+    {provide: MAT_DATE_LOCALE, useValue: "es-ES"},
     // Define el formato de fecha personalizado
-    { provide: MAT_DATE_FORMATS, useValue: {
+    {
+      provide: MAT_DATE_FORMATS, useValue: {
         parse: {
           dateInput: 'LL',
         },
@@ -70,7 +79,12 @@ const routes: Routes = [
           dateA11yLabel: 'LL',
           monthYearA11yLabel: 'MMMM YYYY',
         },
-      } }
+      }
+    }
+  ],
+  exports: [
+    HeaderComponent,
+    [RouterModule]
   ],
   bootstrap: [AppComponent]
 })

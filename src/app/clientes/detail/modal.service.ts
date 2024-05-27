@@ -9,16 +9,25 @@ export class ModalService {
 
   private _notifyUpload = new EventEmitter<any>();
 
-  constructor() {}
-    get notifyUpload(): EventEmitter<any>{
-        return this._notifyUpload;
-    }
+  private _handlerLoginEventEmitter = new EventEmitter();
 
-  openModal(){
-    this.modal=true;
+
+  constructor() {}
+
+  get handlerLoginEventEmitter() {
+    return this._handlerLoginEventEmitter;
   }
 
-  closeModal(){
+  get notifyUpload(): EventEmitter<any> {
+    return this._notifyUpload;
+  }
+
+
+  openModal() {
+    this.modal = true;
+  }
+
+  closeModal() {
     this.modal = false;
   }
 }
