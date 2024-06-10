@@ -9,6 +9,7 @@ import { PaginatorComponent } from "./paginator/paginator.component";
 import { FormComponent } from "./clientes/form.component";
 import { DetalleComponent } from "./clientes/detail/detalle.component";
 import { LoginComponent} from "./users/login.component";
+import { DetalleFacturaComponent} from "./facturas/detalle-factura.component";
 import { ClienteService } from "./clientes/cliente.service";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
@@ -37,7 +38,8 @@ const routes: Routes = [
   { path: "clientes/form/:id", component: FormComponent, canActivate:[authGuard] },
   { path: "clientes/page/:page", component: ClientesComponent },
   { path: "login", component: LoginComponent },
-  { path: "forbidden", component: Forbidden403Component }
+  { path: "forbidden", component: Forbidden403Component },
+  { path: "facturas/:id", component: DetalleFacturaComponent }
 
 
 ];
@@ -51,7 +53,8 @@ const routes: Routes = [
     ClientesComponent,
     FormComponent,
     PaginatorComponent,
-    DetalleComponent
+    DetalleComponent,
+    DetalleFacturaComponent
   ],
   imports: [
     BrowserModule,
