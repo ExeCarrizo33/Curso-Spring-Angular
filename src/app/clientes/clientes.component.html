@@ -5,12 +5,12 @@
   <div class="card-body text-dark">
     <h5 class="card-title">Listado de Clientes</h5>
 
-    @if (admin) {
+<!--    @if (admin) {-->
       <div class="my-2 text-left">
         <button class="btn btn-rounded btn-primary" type="button" [routerLink]="['/clientes/form']">Crear Cliente
         </button>
       </div>
-    }
+<!--    }-->
     <div *ngIf="clientes?.length == 0" class="alert alert-info"> No hay registros en la Base de Datos!</div>
     <table class="table table-bordered table-striped" *ngIf="clientes?.length>0">
       <thead>
@@ -20,10 +20,10 @@
         <th>apellido</th>
         <th>email</th>
         <th>fecha</th>
-        @if (admin) {
+<!--        @if (admin) {-->
           <th>editar</th>
           <th>eliminar</th>
-        }
+<!--        }-->
       </tr>
       </thead>
 
@@ -42,7 +42,7 @@
         <td>{{ cliente.apellido | uppercase }}</td>
         <td>{{ cliente.email }}</td>
         <td>{{ cliente.createAt | date:"EEEE dd, MMMM yyyy" }}</td>
-        @if (admin) {
+<!--        @if (admin) {-->
           <td>
             <button type="button" name="editar" [routerLink]="['/clientes/form', cliente.id]"
                     class="btn btn-primary btn-sm">Editar
@@ -53,7 +53,7 @@
             </button>
 
           </td>
-        }
+<!--        }-->
       </tr>
       </tbody>
     </table>
