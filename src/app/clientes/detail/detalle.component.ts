@@ -4,6 +4,9 @@ import {ClienteService} from "../cliente.service";
 import {ModalService} from "./modal.service";
 import swal from "sweetalert2";
 import {HttpEventType} from "@angular/common/http";
+import {FacturaService} from "../../facturas/services/factura.service";
+import {Factura} from "../../facturas/models/factura";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'detalle-cliente',
@@ -12,14 +15,15 @@ import {HttpEventType} from "@angular/common/http";
 })
 export class DetalleComponent implements OnInit {
 
-  @Input()cliente: Cliente;
+  @Input() cliente: Cliente;
   titulo: string = "Detalle del Cliente"
   fotoSeleccionada: File;
   progreso: number = 0;
 
 
   constructor(private clienteService: ClienteService,
-              public modalService: ModalService) {
+              public modalService: ModalService,
+              private facturaService: FacturaService) {
 
   }
 
@@ -57,9 +61,41 @@ export class DetalleComponent implements OnInit {
     }
   }
 
-  cerrarModal(){
+  cerrarModal() {
     this.modalService.closeModal();
     this.fotoSeleccionada = null;
     this.progreso = 0;
+  }
+
+  delete(factura: Factura) {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger"
+      },
+      buttonsStyling: false
+    });
+    swalWithBootstrapButtons.fire({
+      title: "Estás seguro?",
+      text: `¿Seguro que desea eliminar la factura? ${factura.descripcion}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Si, eliminar!",
+      cancelButtonText: "No, cancelar!",
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.facturaService.delete(factura.id).subscribe(
+          response => {
+            this.cliente.facturas = this.cliente.facturas.filter(f => f !== factura)
+            swalWithBootstrapButtons.fire({
+              title: "Factura Eliminado!",
+              text: `Factura ${factura.descripcion} eliminada con éxito!.`,
+              icon: "success"
+            });
+          }
+        )
+      }
+    });
   }
 }
