@@ -30,21 +30,42 @@
 
       <div class="form-group row">
         <div class="col-sm-6">
-          <mat-form-field class="example-full-width">
+          <mat-form-field>
             <input type="text"
                    placeholder="Añadir producto"
-                   aria-label="Number"
+                   aria-label="Productos"
                    matInput
                    [formControl]="autoCompleteControl"
                    [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="mostrarNombre"
+                              (optionSelected)="seleccionarProducto($event)">
               @for (producto of productosFiltrados | async; track producto) {
-                <mat-option [value]="producto">{{ producto }}</mat-option>
+                <mat-option [value]="producto">{{ producto.nombre }}</mat-option>
               }
             </mat-autocomplete>
           </mat-form-field>
         </div>
       </div>
+
+      <table class="table table-striped table-hover table-sm">
+        <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Precio</th>
+          <th>Cantidad</th>
+          <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of factura.items">
+          <td>{{item.producto.nombre}}</td>
+          <td>{{item.producto.precio}}</td>
+          <td><input type="number" value="{{item.cantidad}}" class="form-control-sm col-6 " (change)="actualizarCantidad(item.producto.id,$event)"></td>
+          <td>{{item.calcularImporte()}}</td>
+
+        </tr>
+        </tbody>
+      </table>
 
 
       <div class="form-group row">
