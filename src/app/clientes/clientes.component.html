@@ -5,32 +5,33 @@
   <div class="card-body text-dark">
     <h5 class="card-title">Listado de Clientes</h5>
 
-    <!--    @if (admin) {-->
+        @if (admin) {
     <div class="my-2 text-left">
       <button class="btn btn-rounded btn-primary" type="button" [routerLink]="['/clientes/form']">Crear Cliente
       </button>
     </div>
-    <!--    }-->
+        }
     <div *ngIf="clientes?.length == 0" class="alert alert-info"> No hay registros en la Base de Datos!</div>
     <table class="table table-bordered table-striped" *ngIf="clientes?.length>0">
       <thead>
       <tr>
-        <th>#</th>
+        @if (authenticated) {<th>#</th>}
         <th>nombre</th>
         <th>apellido</th>
         <th>email</th>
         <th>fecha</th>
+        @if (admin) {
         <th>crear factura</th>
-        <!--        @if (admin) {-->
         <th>editar</th>
         <th>eliminar</th>
-        <!--        }-->
+                }
       </tr>
       </thead>
 
       <tbody>
+
       <tr *ngFor="let cliente of clientes">
-        <td><img (click)="abrirModal(cliente)" *ngIf="cliente?.foto"
+        @if (authenticated) {<td><img (click)="abrirModal(cliente)" *ngIf="cliente?.foto"
                  src="http://localhost:8080/api/uploads/img/{{cliente.foto}}" alt="{{cliente.foto}}"
                  class="img-thumbnail rounded"
                  style="width: 64px; cursor: pointer">
@@ -38,15 +39,16 @@
           <img (click)="abrirModal(cliente)" *ngIf="!cliente?.foto"
                src="http://localhost:8080/img/285645_user_icon.png" alt="Sin Foto"
                class="img-thumbnail rounded"
-               style="width: 64px; cursor: pointer">
+               style="width: 64px; cursor: pointer">}
         <td>{{ cliente.nombre }}</td>
         <td>{{ cliente.apellido | uppercase }}</td>
         <td>{{ cliente.email }}</td>
         <td>{{ cliente.createAt | date:"EEEE dd, MMMM yyyy" }}</td>
+        @if (admin) {
         <td>
           <button type="button" class="btn btn-success btn-sm" [routerLink]="['/facturas/form',cliente.id]">Crear Factura</button>
         </td>
-        <!--        @if (admin) {-->
+
         <td>
           <button type="button" name="editar" [routerLink]="['/clientes/form', cliente.id]"
                   class="btn btn-primary btn-sm">Editar
@@ -57,7 +59,7 @@
           </button>
 
         </td>
-        <!--        }-->
+                }
       </tr>
       </tbody>
     </table>

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FacturaService} from "./services/factura.service";
 import {Factura} from "./models/factura";
 import {ActivatedRoute} from "@angular/router";
+import {AuthService} from "../users/auth.service";
 
 @Component({
   selector: 'app-detalle-factura',
@@ -13,7 +14,8 @@ export class DetalleFacturaComponent implements OnInit{
   titulo:string = 'Factura';
 
   constructor(private facturaService:FacturaService,
-              private activateRoute: ActivatedRoute) {
+              private activateRoute: ActivatedRoute,
+              private authService: AuthService) {
 
   }
 
@@ -24,6 +26,9 @@ export class DetalleFacturaComponent implements OnInit{
     });
   }
 
+  get authenticated(){
+    return this.authService.authenticated();
+  }
 
 
 }

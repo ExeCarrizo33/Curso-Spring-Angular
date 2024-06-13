@@ -31,7 +31,7 @@ import localeEs from "@angular/common/locales/es";
 registerLocaleData(localeEs, "es");
 
 import {RouterModule, Routes} from "@angular/router";
-import {authGuard} from "./guards/auth.guard";
+import {authGuard} from "./users/guards/auth.guard";
 import {Forbidden403Component} from "./components/forbidden403/forbidden403.component";
 
 

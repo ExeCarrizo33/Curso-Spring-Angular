@@ -7,6 +7,7 @@ import {HttpEventType} from "@angular/common/http";
 import {FacturaService} from "../../facturas/services/factura.service";
 import {Factura} from "../../facturas/models/factura";
 import Swal from "sweetalert2";
+import {AuthService} from "../../users/auth.service";
 
 @Component({
   selector: 'detalle-cliente',
@@ -23,7 +24,8 @@ export class DetalleComponent implements OnInit {
 
   constructor(private clienteService: ClienteService,
               public modalService: ModalService,
-              private facturaService: FacturaService) {
+              private facturaService: FacturaService,
+              private authService: AuthService) {
 
   }
 
@@ -97,5 +99,9 @@ export class DetalleComponent implements OnInit {
         )
       }
     });
+  }
+
+  get admin(){
+    return this.authService.isAdmin();
   }
 }

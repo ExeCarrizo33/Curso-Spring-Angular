@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../users/auth.service";
 import {error} from "@angular/compiler-cli/src/transformers/util";
-import {authGuard} from "../guards/auth.guard";
+import {authGuard} from "../users/guards/auth.guard";
 
 @Component({
   selector: 'app-clientes',
@@ -138,6 +138,10 @@ export class ClientesComponent implements OnInit {
 
   get admin(){
     return this.authService.isAdmin();
+  }
+
+  get authenticated(){
+    return this.authService.authenticated();
   }
 
 

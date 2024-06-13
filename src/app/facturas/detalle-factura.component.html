@@ -1,4 +1,4 @@
-<div class="card bg-light" *ngIf="factura">
+@if (authenticated){<div class="card bg-light" *ngIf="factura">
   <div class="card-header">{{ titulo }}: {{ factura.descripcion }}</div>
   <div class="card-body">
     <h4 class="card-title">
@@ -37,8 +37,7 @@
     </table>
 
     <h5 class="float-end">
-      <span class="h6">Gran Total</span>: <span class="h6 ">{{ factura.total }}</span>
-
+      <span class="h6">Gran Total</span>: <span class="h6">{{ factura.total }}</span>
     </h5>
 
     <div class="card border-info mb-4" style="max-width: 250px;">
@@ -52,4 +51,4 @@
     </div>
   </div>
 </div>
-
+}
